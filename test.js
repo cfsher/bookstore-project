@@ -22,4 +22,4 @@ fetch('http://localhost:3000/user', {
 
 console.log('done');
 
-process.exit();
+// process.exit();

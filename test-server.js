@@ -5,7 +5,9 @@ const app = express();
 app.use(bodyParser.json());
 
 app.post('/user', (req, res) => {
-  console.log(req.body);
+  user = req.body;
+  console.log(user);
+  res.status(200).send('request successful');
 });
 
 // POST request to handle login authentication
