@@ -12,4 +12,14 @@ user = {
   cardexp: '12/24'
 };
 
-console.log(user);
+fetch('http://localhost:3000/user', {
+        method: 'post',
+        body: JSON.stringify(user),
+        headers: { 'Content-Type': 'application/json' },
+    })
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
+
+console.log('done');
+
+process.exit();
