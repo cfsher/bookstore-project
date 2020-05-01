@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -14,13 +14,15 @@
 </head>
 
 <body>
+    localhost:3000/user
     <header>
         <div class="header-top">
             <div class="container">
                 <div class="row">
                     <div class="col-md-3"><a href="#" class="web-url">www.Team11books.com</a></div>
                     <div class="col-md-6">
-                        <h5>Team 11 Online Bookstore System . Get $10 on first Order</h5></div>
+                        <h5>Team 11 Online Bookstore System . Get $10 on first Order</h5>
+                    </div>
                     <div class="col-md-3">
                         <span class="ph-number">Call : 706 2548 706</span>
                     </div>
@@ -54,7 +56,8 @@
                         </ul>
                         <div class="cart my-2 my-lg-0">
                             <span>
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            </span>
                             <span class="quntity">9</span>
                         </div>
                         <form class="form-inline my-2 my-lg-0">
@@ -77,49 +80,73 @@
             <h1>My Account / REgister</h1>
             <p>Create your account with us for better Ordering Experience</p>
             <div class="form">
-                <form>
+                <form id="registerForm">
                     <div class="row">
                         <div class="col-md-4">
-                            <input placeholder="Enter User Name" required>
+                            <input id="firstname" placeholder="Enter First Name" required>
+                            <span class="required-star">*</span>
+                        </div>
+                        div class="col-md-4">
+                        <input id="lastname" placeholder="Enter Last Name" required>
+                        <span class="required-star">*</span>
+                    </div>
+                        <div class="col-md-4">
+                            <input id="email " type="email" placeholder="Email" required>
                             <span class="required-star">*</span>
                         </div>
                         <div class="col-md-4">
-                            <input type="email" placeholder="Email" required>
+                            <input id="password" placeholder="Password" required>
                             <span class="required-star">*</span>
                         </div>
                         <div class="col-md-4">
-                            <input placeholder="Password" required>
+                            <input id="repeatpassword" placeholder="Repeat Password" required>
                             <span class="required-star">*</span>
                         </div>
                         <div class="col-md-4">
-                            <input placeholder="Repeat Password" required>
+                            <input id="number" placeholder="Mobile Number" required>
                             <span class="required-star">*</span>
                         </div>
                         <div class="col-md-4">
-                            <input placeholder="Mobile Number" required>
+                            <input id="address" placeholder="Shipping Address" required>
                             <span class="required-star">*</span>
                         </div>
                         <div class="col-md-4">
-                            <input placeholder="Shipping Address" required>
-                            <span class="required-star">*</span>
-                        </div>
-                        <div class="col-md-4">
-                            <input placeholder="Billing Address" required>
+                            <input id="cardtype" placeholder="Card Type" required>
                             <span class="required-star">*</span>
                         </div><div class="col-md-4">
-                            <input placeholder="Card Number" required>
-                            <span class="required-star">*</span>
-                        </div>
-                        <div class="col-md-4">
-                            <input placeholder="CVV" required>
+                            <input id="cardnumber" placeholder="Card Number" required>
                             <span class="required-star">*</span>
                         </div>
                         <div class="col-lg-8 col-md-12">
-                            <button class="btn black">Register</button>
+                            <input type="submit" id="submit" name="submitButton" value="Submit">
                             <h5>not Registered? <a href="login.html">Login here</a></h5>
                         </div>
                     </div>
                 </form>
+                <script type='text/javascript'>
+                    /* attach a submit handler to the form */
+                    $("#registerForm").submit(function (event) {
+
+                        /* stop form from submitting normally */
+                        event.preventDefault();
+
+                        /* get the action attribute from the <form action=""> element */
+                        var $form = $(this),
+                            url = "http://localhost:3000/user"
+
+
+                        /* Send the data using post with element id username email password repeatpassword number address cardtype cardnumber*/
+                        var posting = $.post(url, {
+                            firstname: $('#firstname').val(), lastname: $('#lastname').val(), email: $('#email').val(), password: $('#password').val(), repeatpassword: $('#repeatpassword').val(), number: $('#number').val(),
+                            address: $('address').val(), cardtype: $('#cardtype').val(), cardnumber: $('#cardnumber').val()});
+
+                        /* Alerts the results */
+                        posting.done(function (data) {
+                            alert('success');
+                        });
+                    });
+                </script>
+
             </div>
         </div>
     </section>
@@ -129,8 +156,10 @@
                 <div class="col-md-4">
                     <div class="address">
                         <h4>Our Address</h4>
-                        <h6>The BookStore Theme, 4th Store
-                        Beside that building, USA</h6>
+                        <h6>
+                            The BookStore Theme, 4th Store
+                            Beside that building, USA
+                        </h6>
                         <h6>Call : 800 1234 5678</h6>
                         <h6>Email : info@bookstore.com</h6>
                     </div>
@@ -164,8 +193,10 @@
                 <div class="col-md-5">
                     <div class="form">
                         <h3>Quick Contact us</h3>
-                        <h6>We are now offering some good discount 
-                            on selected books go and shop them</h6>
+                        <h6>
+                            We are now offering some good discount
+                            on selected books go and shop them
+                        </h6>
                         <form>
                             <div class="row">
                                 <div class="col-md-6">
