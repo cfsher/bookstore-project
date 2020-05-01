@@ -15,6 +15,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/styles.css">
+    <script
+  src="https://code.jquery.com/jquery-3.5.0.min.js"
+  integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+  crossorigin="anonymous">
+    </script>
 </head>
 
 <body>
@@ -136,18 +141,29 @@
 
                         /* get the action attribute from the <form action=""> element */
                         var $form = $(this),
-                            url = "http://localhost:3000/user"
+                            url = "http://localhost:3000/user";
 
+                        data = {
+                          firstname: $('#firstname').val(),
+                          lastname: $('#lastname').val(),
+                          email: $('#email').val(),
+                          password: $('#password').val(),
+                          repeatpassword: $('#repeatpassword').val(),
+                          number: $('#number').val(),
+                          address: $('address').val(),
+                          cardtype: $('#cardtype').val(),
+                          cardnumber: $('#cardnumber').val()
+                        }
 
                         /* Send the data using post with element id username email password repeatpassword number address cardtype cardnumber*/
-                        var posting = $.post(url, JSON.stringify{
+                        var posting = $.post(url, {
                             firstname: $('#firstname').val(), lastname: $('#lastname').val(), email: $('#email').val(), password: $('#password').val(), repeatpassword: $('#repeatpassword').val(), number: $('#number').val(),
                             address: $('address').val(), cardtype: $('#cardtype').val(), cardnumber: $('#cardnumber').val()});
 
-                        /* Alerts the results */
-                        posting.done(function (data) {
-                            alert('success');
+                            alert("Success!");
+                            }
                         });
+
                     });
                 </script>
 
