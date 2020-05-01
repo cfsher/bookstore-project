@@ -51,8 +51,7 @@ app.post('/user', (req, res) => {
   const sql = `INSERT INTO users (firstname, lastname, email, password, phone, address,
           cardtype, cardnumber, cardexp)
           VALUES (${user.firstname}, ${user.lastname}, ${user.email}, ${user.password},
-          ${user.phone}, ${user.address}), ${user.cardtype}, ${user.cardnumber},
-          ${user.cardexp}`;
+          ${user.number}, ${user.address}), ${user.cardtype}, ${user.cardnumber}`;
   connection.query(sql, (error, result) => {
     if (error) throw err;
     console.log('1 record inserted');
