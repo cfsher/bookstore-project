@@ -6,59 +6,53 @@ const app = express();
 async function mailer(firstname, lastname, email) {
   let account = await nodemailer.createTestAccount();
   let transporter = nodemailer.createTransport(
-        {
-          host: account.smtp.host,
-          port: account.smtp.port,
-          secure: account.smtp.secure,
-          auth: {
-              user: account.user,
-              pass: account.pass
-          },
-          logger: false,
-          debug: false // include SMTP traffic in the logs
-        },
-        {
-          // default message fields
-
-          // sender info
-          from: 'Bookstore <no-reply@bookstore.net>',
-          headers: {
-          }
-        }
-    );
-    let message = {
-         // Comma separated list of recipients
-         to: `${firstname} ${lastname} <${email}>`,
-
-         // Subject of the message
-         subject: 'Bookstore Registration Confirmation',
-
-         // plaintext body
-         text: `Thank you ${firstname} for registering for the bookstore!`,
-
-         // An array of attachments
-         attachments: []
-     };
-    let info = await transporter.sendMail(message);
-
+    {
+      host: account.smtp.host,
+      port: account.smtp.port,
+      secure: account.smtp.secure,
+      auth: {
+        user: account.user,
+        pass: account.pass
+      },
+      logger: true,
+      debug: false
+    },
+    {
+      from: 'Bookstore <no-reply@bookstore.net>',
+    }
+  );
+  let message = {
+    to: `${firstname} ${lastname} <${email}>`,
+    subject: 'Bookstore Registration Confirmation',
+    text: `Thank you ${firstname} for registering with the bookstore!`,
+    attachments: []
+  }
+  transporter.sendMail(message, (err, info) => {
+    if (err) {
+      console.log('Error occurred sending mail');
+      console.log(err.message);
+    }
     console.log('Message sent successfully!');
-    console.log(nodemailer.getTestMessageUrl(info));
+
+  });
 }
 
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'user'
+  database: 'bookstore'
 });
 
 connection.connect();
 
 app.post('/user', (req, res) => {
   user = req.body.user;
-  const sql = `INSERT INTO users (firstname, lastname, email, password, phone, address)
+  const sql = `INSERT INTO users (firstname, lastname, email, password, phone, address,
+          cardtype, cardnumber, cardexp)
           VALUES (${user.firstname}, ${user.lastname}, ${user.email}, ${user.password},
-          ${user.phone}, ${user.address})`;
+          ${user.phone}, ${user.address}), ${user.cardtype}, ${user.cardnumber},
+          ${user.cardexp}`;
   connection.query(sql, (error, result) => {
     if (error) throw err;
     console.log('1 record inserted');
@@ -72,6 +66,8 @@ app.post('/user', (req, res) => {
 
 // POST request to handle login authentication
 app.post('/login', (req, res) => {
+  login = req.body.login;
+  console.log(login);
   // TODO pass in login information
   // send query checking if user/pass is in db
   // send back if authenticated
@@ -79,6 +75,8 @@ app.post('/login', (req, res) => {
 
 // POST request to handle edit profile actions
 app.post('editProfile', (req, res) => {
+  edits = req.body.edits;
+  console.log(edits);
   // TODO pass in modified information
   // send query updating information for user
   //
