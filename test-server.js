@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.post('/user', (req, res) => {
   user = req.body;
@@ -12,8 +14,9 @@ app.post('/user', (req, res) => {
 
 // POST request to handle login authentication
 app.post('/login', (req, res) => {
-  login = JSON.parse(req.body.login);
+  login = req.body;
   console.log(login);
+  res.status(200).send('request successful');
 });
 
 // POST request to handle edit profile actions
