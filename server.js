@@ -1,7 +1,11 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const app = express();
+
+app.use(bodyParser.json());
+app.use(cors());
 
 async function mailer(firstname, lastname, email) {
   let account = await nodemailer.createTestAccount();
@@ -47,16 +51,15 @@ const connection = mysql.createConnection({
 connection.connect();
 
 app.post('/user', (req, res) => {
-  user = req.body.user;
-  const sql = `INSERT INTO users (firstname, lastname, email, password, phone, address,
-          cardtype, cardnumber, cardexp)
+  user = req.body;
+  const sql = `INSERT INTO users (firstname, lastname, email, password, number, address,
+          cardtype, cardnumber)
           VALUES (${user.firstname}, ${user.lastname}, ${user.email}, ${user.password},
-          ${user.phone}, ${user.address}), ${user.cardtype}, ${user.cardnumber},
-          ${user.cardexp}`;
+          ${user.number}, ${user.address}), ${user.cardtype}, ${user.cardnumber}`;
   connection.query(sql, (error, result) => {
     if (error) throw err;
     console.log('1 record inserted');
-    res.send('user added');
+    res.status(200).send('user added');
     mailer(firstname, lastname, email).catch(err => {
       console.error(err.message);
       process.exit(1);
