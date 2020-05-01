@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Book Store</title>
-    <script src="jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.min.js"
+            integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+            crossorigin="anonymous">
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#03a6f3">
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -92,20 +95,20 @@
                             <input id="firstname" placeholder="Enter First Name" required>
                             <span class="required-star">*</span>
                         </div>
-                        div class="col-md-4">
+                       <div class="col-md-4">
                         <input id="lastname" placeholder="Enter Last Name" required>
                         <span class="required-star">*</span>
-                    </div>
+                        </div>
                         <div class="col-md-4">
                             <input id="email " type="email" placeholder="Email" required>
                             <span class="required-star">*</span>
                         </div>
                         <div class="col-md-4">
-                            <input id="password" placeholder="Password" required>
+                            <input id="password" type="password" placeholder="Password" required>
                             <span class="required-star">*</span>
                         </div>
                         <div class="col-md-4">
-                            <input id="repeatpassword" placeholder="Repeat Password" required>
+                            <input id="repeatpassword" type="password" placeholder="Repeat Password" required>
                             <span class="required-star">*</span>
                         </div>
                         <div class="col-md-4">
@@ -152,16 +155,10 @@
                           cardnumber: $('#cardnumber').val()
                         }
 
-                        $.ajax
-                        ({
-                            type: "POST",
-                            //the url where you want to sent the userName and password to
-                            url: url,
-                            async: false,
-                            //json object to sent to the authentication url
-                            data: JSON.stringify(data),
-                            contentType: 'application/json',
-                            success: function () {
+                        /* Send the data using post with element id username email password repeatpassword number address cardtype cardnumber*/
+                        var posting = $.post(url, {
+                            firstname: $('#firstname').val(), lastname: $('#lastname').val(), email: $('#email').val(), password: $('#password').val(), repeatpassword: $('#repeatpassword').val(), number: $('#number').val(),
+                            address: $('address').val(), cardtype: $('#cardtype').val(), cardnumber: $('#cardnumber').val()});
 
                             alert("Success!");
                             }
