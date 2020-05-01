@@ -5,11 +5,10 @@ user = {
   lastname: 'user',
   email: 'chris.fisher015@gmail.com',
   password: 'password',
-  phone: '555-555-5555',
+  number: '555-555-5555',
   address: '555 sunset blvd. athens, ga 30601',
   cardtype: 'visa',
-  cardnumber: '123456789',
-  cardexp: '12/24'
+  cardnumber: '123456789'
 };
 
 fetch('http://localhost:3000/user', {

@@ -21,8 +21,9 @@ app.post('/login', (req, res) => {
 
 // POST request to handle edit profile actions
 app.post('editProfile', (req, res) => {
-  edits = JSON.parse(req.body.edits);
+  edits = req.body;
   console.log(edits);
+  res.status(200).send('request successful');
 })
 
 // listening on port 3000

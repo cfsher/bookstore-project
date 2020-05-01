@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
+const nodemailer = require('nodemailer');
 const app = express();
 
 app.use(bodyParser.json());
@@ -26,7 +27,7 @@ async function mailer(firstname, lastname, email) {
     }
   );
   let message = {
-    to: `${firstname} ${lastname} <${email}>`,
+    to: `${firstname} ${lastname} ${email}`,
     subject: 'Bookstore Registration Confirmation',
     text: `Thank you ${firstname} for registering with the bookstore!`,
     attachments: []
@@ -52,15 +53,21 @@ connection.connect();
 
 app.post('/user', (req, res) => {
   user = req.body;
-  const sql = `INSERT INTO users (firstname, lastname, email, password, number, address,
+  const sql = `INSERT INTO users (firstname, lastname, email, password, phone, address,
           cardtype, cardnumber)
-          VALUES (${user.firstname}, ${user.lastname}, ${user.email}, ${user.password},
-          ${user.number}, ${user.address}), ${user.cardtype}, ${user.cardnumber}`;
-  connection.query(sql, (error, result) => {
-    if (error) throw err;
+          VALUES ('${user.firstname}', '${user.lastname}', '${user.email}',
+          '${user.password}', '${user.number}', '${user.address}', '${user.cardtype}',
+          '${user.cardnumber}')`;
+  console.log(sql);
+  connection.query(sql, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log(result);
     console.log('1 record inserted');
+    connection.end();
     res.status(200).send('user added');
-    mailer(firstname, lastname, email).catch(err => {
+    mailer(user.firstname, user.lastname, user.email).catch(err => {
       console.error(err.message);
       process.exit(1);
     });
@@ -89,5 +96,3 @@ app.post('editProfile', (req, res) => {
 app.listen(3000, () => {
   console.log('listening on port 3000')
 });
-
-connection.end();
