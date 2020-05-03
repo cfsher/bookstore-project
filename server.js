@@ -54,6 +54,7 @@ connection.connect();
 // POST route to handle new user registration
 app.post('/user', (req, res) => {
   user = req.body;
+  console.log(user);
   const sql = `INSERT INTO users (firstname, lastname, email, password, phone, address,
           cardtype, cardnumber)
           VALUES ('${user.firstname}', '${user.lastname}', '${user.email}',
@@ -65,8 +66,7 @@ app.post('/user', (req, res) => {
     }
     console.log(result);
     console.log('New users record created');
-    connection.end();
-    res.status(200).send(`User created successfully!`);
+    res.status(200).send(JSON.stringify('User created sucessfully!'));
     mailer(user.firstname, user.lastname, user.email).catch(err => {
       console.error(err.message);
       process.exit(1);
@@ -88,9 +88,13 @@ app.post('/login', (req, res) => {
     if (err) {
       return console.log(err);
     }
-    console.log(result);
-    // if there is a result, send back response with user id
-    // if no result, send back response login unsuccessful
+    if (result.length === 0) {
+      res.status(200).send(JSON.stringify('Login unsuccessful!'));
+    }
+    else {
+      res.status(200).send(JSON.stringify(result[0].id));
+      console.log(result);
+    }
   });
 });
 
@@ -108,18 +112,42 @@ app.post('/editProfile', (req, res) => {
     }
     console.log(result);
     console.log('Users record updated');
-    res.status(200).send(`User updated successfully!`);
+    res.status(200).send(JSON.stringify(`User updated successfully!`));
   });
 });
 
 // POST route to handle promo subscription changes
 app.post('/editPromo', (req, res) => {
-
+  promo_changes = req.body;
+  const sql = `UPDATE users SET subscribed_promos = '${promo_changes}' where
+          id = '${promo_changes.id}'`;
+  connection.query(sql, (err, result) => {
+    if (err) {
+      return console.log(err);
+    }
+    console.log(result);
+    console.log('Users record updated');
+    res.status(200).send(JSON.stringify('User updated sucessfully'));
+  });
 });
 
 // GET route to retreive some number of books from database
 app.get('/books/:amount', (req, res) => {
-
+  amount = req.params.amount;
+  const sql = `SELECT ${amount} from books`;
+  connection.query(sql, (err, result) => {
+    if (err) {
+      return console.log(err);
+    }
+    if (result.length === 0) {
+      res.status(200).send(JSON.stringify('No books found!'));
+    }
+    else {
+      console.log(result);
+      res.status(200).send(JSON.stringify(result));
+      console.log(`${amount} books records successfully retreived`);
+    }
+  });
 });
 
 // POST route to store new book in database
@@ -149,7 +177,7 @@ app.post('/newOrder', (req, res) => {
 
 // GET route to retreive all orders for userId
 app.get('/orders/:userId', (req, res) => {
-  
+
 });
 
 
