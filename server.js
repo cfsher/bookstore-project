@@ -51,6 +51,7 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
+// POST route to handle new user registration
 app.post('/user', (req, res) => {
   user = req.body;
   const sql = `INSERT INTO users (firstname, lastname, email, password, phone, address,
@@ -58,15 +59,14 @@ app.post('/user', (req, res) => {
           VALUES ('${user.firstname}', '${user.lastname}', '${user.email}',
           '${user.password}', '${user.number}', '${user.address}', '${user.cardtype}',
           '${user.cardnumber}')`;
-  console.log(sql);
   connection.query(sql, (err, result) => {
     if (err) {
-      console.log(err);
+      return console.log(err);
     }
     console.log(result);
-    console.log('1 record inserted');
+    console.log('New users record created');
     connection.end();
-    res.status(200).send('user added');
+    res.status(200).send(`User created successfully!`);
     mailer(user.firstname, user.lastname, user.email).catch(err => {
       console.error(err.message);
       process.exit(1);
@@ -74,23 +74,84 @@ app.post('/user', (req, res) => {
   });
 });
 
-// POST request to handle login authentication
-app.post('/login', (req, res) => {
-  login = req.body.login;
-  console.log(login);
-  // TODO pass in login information
-  // send query checking if user/pass is in db
-  // send back if authenticated
+// POST route to handle user verification
+app.post('/verification', (req, res) => {
+
 });
 
-// POST request to handle edit profile actions
-app.post('editProfile', (req, res) => {
-  edits = req.body.edits;
-  console.log(edits);
-  // TODO pass in modified information
-  // send query updating information for user
-  //
-})
+// POST route to handle login authentication
+app.post('/login', (req, res) => {
+  login = req.body;
+  const sql = `SELECT * FROM users WHERE email = '${login.email}' AND
+          password = '${login.password}'`;
+  connection.query(sql, (err, result) => {
+    if (err) {
+      return console.log(err);
+    }
+    console.log(result);
+    // if there is a result, send back response with user id
+    // if no result, send back response login unsuccessful
+  });
+});
+
+// POST route to handle user profile changes
+app.post('/editProfile', (req, res) => {
+  edits = req.body
+  const sql = `UPDATE users SET firstname = '${edits.firstname}',
+  lastname = '${edits.lastname}', email = '${edits.email}',
+  password = '${edits.password}', phone = '${edits.phone}',
+  address = '${edits.address}', cardtype = '${edits.cardtype}',
+  cardnumber = '${edits.cardnumber}' WHERE id = '${edits.id}'`;
+  connection.query(sql, (err, result) => {
+    if (err) {
+      return console.log(err);
+    }
+    console.log(result);
+    console.log('Users record updated');
+    res.status(200).send(`User updated successfully!`);
+  });
+});
+
+// POST route to handle promo subscription changes
+app.post('/editPromo', (req, res) => {
+
+});
+
+// GET route to retreive some number of books from database
+app.get('/books/:amount', (req, res) => {
+
+});
+
+// POST route to store new book in database
+app.post('/book', (req, res) => {
+
+});
+
+// GET route to retreive a promo from database
+app.get('/promo/:promoCode', (req, res) => {
+
+});
+
+// POST route to store new promo in database
+app.post('/promo', (req, res) => {
+
+});
+
+// POST route to handle shopping cart changes
+app.post('/updateShoppingCart', (req, res) => {
+
+});
+
+// POST route to handle new order
+app.post('/newOrder', (req, res) => {
+
+});
+
+// GET route to retreive all orders for userId
+app.get('/orders/:userId', (req, res) => {
+  
+});
+
 
 // listening on port 3000
 app.listen(3000, () => {
