@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+url = 'http://localhost:3000/user'
 
 user = {
   firstname: 'test',
@@ -11,14 +12,11 @@ user = {
   cardnumber: '123456789'
 };
 
-fetch('http://localhost:3000/user', {
+fetch(url, {
         method: 'post',
         body: JSON.stringify(user),
         headers: { 'Content-Type': 'application/json' },
     })
-    .then(res => console.log(res))
+    .then(res => res.json())
+    .then(json => console.log(json))
     .catch(err => console.log(err));
-
-console.log('done');
-
-// process.exit();

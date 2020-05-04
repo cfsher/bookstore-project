@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -11,16 +11,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/styles.css">
+    <script
+  src="https://code.jquery.com/jquery-3.5.0.min.js"
+  integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+  crossorigin="anonymous">
+    </script>
 </head>
 
 <body>
+    localhost:3000/user
     <header>
         <div class="header-top">
             <div class="container">
                 <div class="row">
                     <div class="col-md-3"><a href="#" class="web-url">www.Team11books.com</a></div>
                     <div class="col-md-6">
-                        <h5>Team 11 Online Bookstore System . Get $10 on first Order</h5></div>
+                        <h5>Team 11 Online Bookstore System . Get $10 on first Order</h5>
+                    </div>
                     <div class="col-md-3">
                         <span class="ph-number">Call : 706 2548 706</span>
                     </div>
@@ -54,7 +61,8 @@
                         </ul>
                         <div class="cart my-2 my-lg-0">
                             <span>
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            </span>
                             <span class="quntity">9</span>
                         </div>
                         <form class="form-inline my-2 my-lg-0">
@@ -69,34 +77,45 @@
     <div class="breadcrumb">
         <div class="container">
             <a class="breadcrumb-item" href="index.html">Home</a>
-            <span class="breadcrumb-item active">Login</span>
+            <span class="breadcrumb-item active">Verify</span>
         </div>
     </div>
     <section class="static about-sec">
         <div class="container">
-            <h1>My Account / Login</h1>
+            <h1>Thank you for registering!</h1>
+            <p>A code was sent to your email. Please enter the code below to verify your account</p>
             <div class="form">
-                <form method = "POST" action = "/login">
+                <form id="verificationForm">
                     <div class="row">
-                        <div class="col-md-5">
-                          <label for = "email">email</label>
-                          <input type= "email" id="email" name="email"><br>
-
+                        <div>
+                          <input id="code" placeholder="Code" required>
                         </div>
-                        <div class="col-md-5">
-                          <label for = "password">password</label>
-                          <input type= "password" id="password" name="password"><br>
-                            <span class="required-star">*</span>
-                        </div>
-
                         <div class="col-lg-8 col-md-12">
-                            <button class="btn black" type=submit> Login </button>
-                            <h5>not Registered? <a href="register.html">Register here</a></h5>
-                            <h5>Forgot password? <a href="forgotPassword.html">Reset Password</a></h5>
+                            <input type="submit" id="submit" name="submitButton" value="Submit">
                         </div>
-
                     </div>
                 </form>
+                <script type='text/javascript'>
+                    /* attach a submit handler to the form */
+                    $("#verificationForm").submit(function (event) {
+
+                        event.preventDefault();
+
+                        var $form = $(this);
+                        url = 'http://localhost:3000/verify/' + $('#code').val();
+
+                        $.ajax
+                        ({
+                            method: 'GET',
+                            url: url,
+                            async: false,
+                            dataType: 'json',
+                            success: function (data) {
+                            }
+                        });
+                    });
+                </script>
+
             </div>
         </div>
     </section>
@@ -106,8 +125,10 @@
                 <div class="col-md-4">
                     <div class="address">
                         <h4>Our Address</h4>
-                        <h6>The BookStore Theme, 4th Store
-                        Beside that building, USA</h6>
+                        <h6>
+                            The BookStore Theme, 4th Store
+                            Beside that building, USA
+                        </h6>
                         <h6>Call : 800 1234 5678</h6>
                         <h6>Email : info@bookstore.com</h6>
                     </div>
@@ -141,8 +162,10 @@
                 <div class="col-md-5">
                     <div class="form">
                         <h3>Quick Contact us</h3>
-                        <h6>We are now offering some good discount
-                            on selected books go and shop them</h6>
+                        <h6>
+                            We are now offering some good discount
+                            on selected books go and shop them
+                        </h6>
                         <form>
                             <div class="row">
                                 <div class="col-md-6">
