@@ -77,20 +77,24 @@
             <h1>My Account / Login</h1>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's printer took a galley of type and scrambled it to make a type specimen book. It has survived not only fiveLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </p>
             <div class="form">
-                <form>
+                <form method = "POST" action = "/login">
                     <div class="row">
                         <div class="col-md-5">
-                            <input placeholder="Enter User Name" required>
-                            <span class="required-star">*</span>
+                          <label for = "email">email</label>
+                          <input type= "email" id="email" name="email"><br>
+
                         </div>
                         <div class="col-md-5">
-                            <input type="email" placeholder="Enter Email Address" required>
+                          <label for = "password">password</label>
+                          <input type= "password" id="password" name="password"><br>
                             <span class="required-star">*</span>
                         </div>
+
                         <div class="col-lg-8 col-md-12">
-                            <button class="btn black">Login</button>
-                            <h5>not Registered? <a href="register.html">REgister here</a></h5>
+                            <button class="btn black" type=submit> Login </button>
+                            <h5>not Registered? <a href="register.html">Register here</a></h5>
                         </div>
+
                     </div>
                 </form>
             </div>
@@ -137,7 +141,7 @@
                 <div class="col-md-5">
                     <div class="form">
                         <h3>Quick Contact us</h3>
-                        <h6>We are now offering some good discount 
+                        <h6>We are now offering some good discount
                             on selected books go and shop them</h6>
                         <form>
                             <div class="row">

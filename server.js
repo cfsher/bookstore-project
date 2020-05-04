@@ -128,11 +128,11 @@ app.get('/verify/:code', (req, res) => {
 });
 
 
+
 // POST route to handle login authentication
 app.post('/login', (req, res) => {
   login = req.body;
-  console.log("DATA FROM LOGIN FORM" + req.body);
-  const sql = `SELECT id FROM users WHERE email = '${login.email}' AND
+  const sql = `SELECT id, admin FROM users WHERE email = '${login.email}' AND
           password = '${login.password}'`;
   connection.query(sql, (err, result) => {
     if (err) {
@@ -142,8 +142,21 @@ app.post('/login', (req, res) => {
       res.status(200).send(stringify('Login unsuccessful!'));
     }
     else {
-      res.status(200).send(stringify(result[0]));
-    }
+      res.status(200)
+      unparsedResult = JSON.stringify(result)
+      offset = 7;
+      start = (unparsedResult.indexOf('admin'))
+      end = unparsedResult.indexOf('}');
+      isAdmin = unparsedResult.substring((start+offset), end);
+      //res.status(200).send(stringify(result[0]));
+      if(isAdmin === '1'){
+      //if admin
+        res.redirect('http://localhost:3000/adminhome.html')
+      }
+      else{//not admin
+        res.redirect('http://localhost:3000/index.html')
+      }//else
+    }//else
   });
 });
 
