@@ -19,6 +19,9 @@ decrypted += decipher.final('utf8');
 app.use(bodyParser.json());
 app.use(cors());
 
+//display homepage
+app.use(express.static('html/'));
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -64,7 +67,7 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   //password: 'password',
-  password: '',
+  password: 'password',
   database: 'bookstore'
 });
 
@@ -85,7 +88,7 @@ app.post('/user', (req, res) => {
 by entering the following code:</p>
 <b>${verification_code}</b>`;
 
-  const sql = `INSERT INTO users (firstname, lastname, email, password, phone, address,
+  let sql = `INSERT INTO users (firstname, lastname, email, password, phone, address,
           cardtype, cardnumber, status, subscribed_promos, verification_code)
           VALUES ('${user.firstname}', '${user.lastname}', '${user.email}',
           MD5('${user.password}'), '${user.number}', '${user.address}', '${user.cardtype}',
@@ -122,12 +125,17 @@ app.get('/verify/:code', (req, res) => {
         if (err) {
           return console.log(err);
         }
+        sql = `INSERT INTO shopping_carts (user_id, items) VALUES ('${result[0].id}', '0')`;
+        connection.query(sql, (err, result) => {
+          if (err) {
+            return console.log(err);
+          }
+        });
+        res.redirect(`http://localhost:3000/home.html?user_id=${result[0].id}`);
       });
     }
   });
 });
-
-
 
 // POST route to handle login authentication
 app.post('/login', (req, res) => {
@@ -151,10 +159,10 @@ app.post('/login', (req, res) => {
       //res.status(200).send(stringify(result[0]));
       if(isAdmin === '1'){
       //if admin
-        res.redirect('http://localhost:3000/adminhome.html')
+        res.redirect(`http://localhost:3000/adminhome.html?${result[0].id}`);
       }
       else{//not admin
-        res.redirect('http://localhost:3000/index.html')
+        res.redirect(`http://localhost:3000/home.html?${result[0].id}`);
       }//else
     }//else
   });
@@ -167,7 +175,7 @@ app.post('/editProfile', (req, res) => {
   lastname = '${edits.lastname}', email = '${edits.email}',
   password = '${edits.password}', phone = '${edits.phone}',
   address = '${edits.address}', cardtype = '${edits.cardtype}',
-  cardnumber = '${edits.cardnumber}' WHERE id = '${edits.id}'`;
+  cardnumber = MD5('${edits.cardnumber}') WHERE id = '${edits.id}'`;
   connection.query(sql, (err, result) => {
     if (err) {
       return console.log(err);
@@ -263,16 +271,73 @@ app.post('/promo', (req, res) => {
 
 // POST route to handle shopping cart changes
 app.post('/updateShoppingCart', (req, res) => {
-
+  data = req.body;
+  let book_count;
+  let sql = `SELECT items FROM shopping_carts WHERE user_id = '${data.user_id}'`;
+  connection.query(sql, (err, result) => {
+    if (err) {
+      return console.log(err);
+    }
+    book_count = result[0].items + 1;
+    const sql = `UPDATE shopping_carts SET book${book_count} = '${data.book}' WHERE user_id = '${data.user_id}'`;
+    connection.query(sql, (err, result) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  });
 });
 
 // POST route to handle new order
 app.post('/newOrder', (req, res) => {
-
+  
 });
 
-//display homepage
-app.use(express.static('html/'));
+app.post('/resetPassword', (req, res) => {
+  data = req.body;
+
+  verification_code = random_code_generator();
+  email_message = `<h2>Password Reset</h2>
+<br><p>In order to reset your password, you will need to verify your email
+by entering the following code along with your new password:</p>
+<b>${verification_code}</b>`;
+
+  const sql = `UPDATE users SET verification_code = '${verification_code}' WHERE email = '${data.email}'`;
+  connection.query(sql, (err, result) => {
+    if (err) {
+      return console.log(err);
+    }
+    res.redirect(`http://localhost:3000/resetPassword.html`);
+    mailer('', '', data.email, email_message)
+      .catch(err => console.log(err.message));
+  });
+});
+
+app.post('/newPassword/:code', (req, res) => {
+  code = req.params.code;
+  data = req.body;
+  let sql = `SELECT id FROM users WHERE verification_code = '${code}' AND status = '1'`;
+  connection.query(sql, (err, result) => {
+    if (err) {
+      return console.log(err);
+    }
+    if (result.length == 0) {
+      res.status(200).send(stringify('Verification unsuccessful!'));
+    }
+    else {
+      res.status(200).send(stringify(result[0]));
+      sql = `UPDATE users SET password = MD5('${data.password}') WHERE id = '${result[0].id}'`;
+      connection.query(sql, (err, result) => {
+        if (err) {
+          return console.log(err);
+        }
+        res.redirect(`http://localhost:3000/home.html?user_id=${result[0].id}`);
+      });
+    }
+  });
+})
+
+
 
 // listening on port 3000
 app.listen(3000, () => {
