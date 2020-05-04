@@ -77,45 +77,75 @@
             <h1>Manage Books</h1>
             <p>Add or delete the number of a books in inventory</p>
             <div class="form">
-                <form>
+                <form id = "manage books" method = "POST" action = "book">
                     <div class="row">
+
                         <div class="col-md-4">
-                            <input placeholder="Search Books by Type" required>
-                            <span class="required-star"></span>
+                            <label for = "isbn">isbn (num field)</label>
+                            <input type="number" id="isbn" name="isbn"><br>
                         </div>
+
                         <div class="col-md-4">
-                            <input placeholder="Search Books by Author " required>
-                            <span class="required-star"></span>
+                          <label for = "category">category</label>
+                          <input type="text" id="category" name="category"><br>
                         </div>
-                    <div class="col-md-4">
-                            <input placeholder="Search Books by category" required>
-                            <span class="required-star"></span>
+
+                        <div class="col-md-4">
+                          <label for = "author_1">author</label>
+                          <input type="text" id="author_1" name="author_1"><br>
                         </div>
-                    
-                    
-                        <div class="col-lg-8 col-md-12">
-                            <h5>1) Harry Porter |Quantity: 391 |</h5>
-                            <button class="btn black">Add(+1)</button>
-                            <button class="btn black">-Delete-</button>
+
+                        <div class="col-md-4">
+                          <label for = "title">title</label>
+                          <input type="text" id="title" name="title"><br>
                         </div>
-                        <div class="col-lg-8 col-md-12">
-                            <h5>2) Rarry Porter |Quantity: 213 |</h5>
-                            <button class="btn black">Add(+1)</button>
-                            <button class="btn black">-Delete-</button>
+
+                        <div class="col-md-4">
+                          <label for = "cover_picture">cover_picture</label>
+                          <input type="file" id="cover_picture" name="cover_picture" accept="image"><br>
                         </div>
-                      
-                        <div class="col-lg-8 col-md-12">
-                            <h5>3) Barry Porter |Quantity: 532 |</h5>
-                            <button class="btn black">Add(+1)</button>
-                            <button class="btn black">Delete</button>
+
+                        <div class="col-md-4">
+                          <label for = "edition">edition (num field)</label>
+                          <input type="number" id="edition" name="edition"><br>
+                        </div>
+
+                        <div class="col-md-4">
+                          <label for = "publisher">publisher</label>
+                          <input type="text" id="publisher" name="publisher"><br>
+                        </div>
+
+                        <div class="col-md-4">
+                          <label for = "publication_year">publication year (num field)</label>
+                          <input type="number" id="publication_year" name="publication_year"><br>
+                        </div>
+
+                        <div class="col-md-4">
+                          <label for = "quantity_in_stock">quantity in stock (num field)</label>
+                          <input type="number" id="quantity_in_stock" name="quantity_in_stock"><br>
+                        </div>
+
+                        <div class="col-md-4">
+                          <label for = "minimum_threshold">minimum threshold (num field)</label>
+                          <input type="number" id="minimum_threshold" name="minimum_threshold"><br>
+                        </div>
+
+                        <div class="col-md-4">
+                          <label for = "buying_price">buying price (num field)</label>
+                          <input type="number" id="buying_price" name="buying_price"><br>
+                        </div>
+
+                        <div class="col-md-4">
+                          <label for = "selling_price">selling price (num field)</label>
+                          <input type="number" id="selling_price" name="selling_price"><br>
                         </div>
 
                          <div class="col-lg-8 col-md-12">
-                           
-                            <button class="btn black">Add New Book</button>
-                            <button class="btn black">Load More books Inventory</button>
+
+                            <button type=submit>Add Book</button>
+
                         </div>
-                        
+
                     </div>
                 </form>
             </div>
@@ -162,7 +192,7 @@
                 <div class="col-md-5">
                     <div class="form">
                         <h3>Quick Contact us</h3>
-                        <h6>We are now offering some good discount 
+                        <h6>We are now offering some good discount
                             on selected books go and shop them</h6>
                         <form>
                             <div class="row">
