@@ -17,9 +17,6 @@ fetch(url, {
         body: JSON.stringify(user),
         headers: { 'Content-Type': 'application/json' },
     })
-    .then(res => console.log(res))
+    .then(res => res.json())
+    .then(json => console.log(json))
     .catch(err => console.log(err));
-
-console.log('done');
-
-// process.exit();

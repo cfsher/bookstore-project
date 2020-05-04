@@ -1,18 +1,18 @@
 const fetch = require('node-fetch');
-url = 'http://localhost:3000/login';
+const url = 'http://localhost:3000/promo';
 
-login = {
-  email: 'test@gmail.com',
-  password: 'password'
+promo = {
+  percentage: 10,
+  start_date: '2020-05-10',
+  end_date: '2020-05-12',
+  code: 'SAVE5'
 };
 
 fetch(url, {
   method: 'post',
-  body: JSON.stringify(login),
+  body: JSON.stringify(promo),
   headers: { 'Content-Type': 'application/json' }
 })
 .then(res => res.json())
 .then(json => console.log(json))
 .catch(err => console.log(err));
-
-console.log('expected: 9');
