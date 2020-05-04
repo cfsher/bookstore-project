@@ -19,6 +19,10 @@ decrypted += decipher.final('utf8');
 app.use(bodyParser.json());
 app.use(cors());
 
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
 const random_code_generator = () => Math.floor(Math.random() * Math.floor(999999));
 const stringify = (obj) => JSON.stringify(obj);
 
@@ -123,9 +127,11 @@ app.get('/verify/:code', (req, res) => {
   });
 });
 
+
 // POST route to handle login authentication
 app.post('/login', (req, res) => {
   login = req.body;
+  console.log("DATA FROM LOGIN FORM" + req.body);
   const sql = `SELECT id FROM users WHERE email = '${login.email}' AND
           password = '${login.password}'`;
   connection.query(sql, (err, result) => {
@@ -190,20 +196,14 @@ app.get('/books/:amount', (req, res) => {
   });
 });
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-
-app.use(bodyParser.json())
-
 // POST route to store new book in database
 app.post('/book', (req, res) => {
 bookInfo = req.body
-console.log(req.body);
-const sql = `INSERT INTO books (isbn, category, author_1, title, edition, publisher,
+//console.log(req.body);
+const sql = `INSERT INTO books (isbn, category, author_1, title, cover_picture, edition, publisher,
         publication_year, quantity_in_stock, minimum_threshold, buying_price, selling_price)
         VALUES ('${bookInfo.isbn}', '${bookInfo.category}', '${bookInfo.author_1}',
-        '${bookInfo.title}', '${bookInfo.edition}', '${bookInfo.publisher}', '${bookInfo.publication_year}',
+        '${bookInfo.title}', '${bookInfo.cover_picture}' ,'${bookInfo.edition}', '${bookInfo.publisher}', '${bookInfo.publication_year}',
         '${bookInfo.quantity_in_stock}', '${bookInfo.minimum_threshold}' , '${bookInfo.buying_price}', '${bookInfo.selling_price}')`;
         connection.query(sql, (err, result) => {
           if (err) {
