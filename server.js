@@ -59,11 +59,17 @@ async function mailer(firstname, lastname, email, message) {
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'password',
+  //password: 'password',
+  password: '',
   database: 'bookstore'
 });
 
-connection.connect();
+connection.connect(function(err) {
+  if (err) {
+    console.error('Error connecting to MySQL: '+ err);
+  }
+   console.log('connected as id ' + connection.threadId);
+   });
 
 // POST route to handle new user registration
 app.post('/user', (req, res) => {
@@ -184,10 +190,49 @@ app.get('/books/:amount', (req, res) => {
   });
 });
 
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+app.use(bodyParser.json())
+
 // POST route to store new book in database
 app.post('/book', (req, res) => {
-
+bookInfo = req.body
+console.log(req.body);
+const sql = `INSERT INTO books (isbn, category, author_1, title, edition, publisher,
+        publication_year, quantity_in_stock, minimum_threshold, buying_price, selling_price)
+        VALUES ('${bookInfo.isbn}', '${bookInfo.category}', '${bookInfo.author_1}',
+        '${bookInfo.title}', '${bookInfo.edition}', '${bookInfo.publisher}', '${bookInfo.publication_year}',
+        '${bookInfo.quantity_in_stock}', '${bookInfo.minimum_threshold}' , '${bookInfo.buying_price}', '${bookInfo.selling_price}')`;
+        connection.query(sql, (err, result) => {
+          if (err) {
+            return console.log(err);
+          }
+          console.log('book added to database!\n');
+          res.status(200).send(stringify('Book added successfully!'));
+        });
 });
+
+/*
+const sql = `INSERT INTO users (firstname, lastname, email, password, phone, address,
+        cardtype, cardnumber, status, subscribed_promos, verification_code)
+        VALUES ('${user.firstname}', '${user.lastname}', '${user.email}',
+        '${user.password}', '${user.number}', '${user.address}', '${user.cardtype}',
+        '${user.cardnumber}', '0', '1', '${verification_code}')`;
+connection.query(sql, (err, result) => {
+  if (err) {
+    return console.log(err);
+  }
+  console.log('New users record created\n');
+  console.log(result);
+  res.status(200).send(stringify('User created successfully!'));
+  mailer(user.firstname, user.lastname, user.email, email_message).catch(err => {
+    console.error(err.message);
+    process.exit(1);
+  });
+});
+*/
 
 // GET route to retreive a promo from database
 app.get('/promo/:promoCode', (req, res) => {
@@ -233,11 +278,8 @@ app.post('/newOrder', (req, res) => {
 
 });
 
-// GET route to retreive all orders for userId
-app.get('/orders/:userId', (req, res) => {
-
-});
-
+//display homepage
+app.use(express.static('html/'));
 
 // listening on port 3000
 app.listen(3000, () => {
