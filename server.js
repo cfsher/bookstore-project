@@ -214,26 +214,6 @@ const sql = `INSERT INTO books (isbn, category, author_1, title, edition, publis
         });
 });
 
-/*
-const sql = `INSERT INTO users (firstname, lastname, email, password, phone, address,
-        cardtype, cardnumber, status, subscribed_promos, verification_code)
-        VALUES ('${user.firstname}', '${user.lastname}', '${user.email}',
-        '${user.password}', '${user.number}', '${user.address}', '${user.cardtype}',
-        '${user.cardnumber}', '0', '1', '${verification_code}')`;
-connection.query(sql, (err, result) => {
-  if (err) {
-    return console.log(err);
-  }
-  console.log('New users record created\n');
-  console.log(result);
-  res.status(200).send(stringify('User created successfully!'));
-  mailer(user.firstname, user.lastname, user.email, email_message).catch(err => {
-    console.error(err.message);
-    process.exit(1);
-  });
-});
-*/
-
 // GET route to retreive a promo from database
 app.get('/promo/:promoCode', (req, res) => {
   promoCode = req.params.promoCode;
