@@ -72,14 +72,14 @@ app.post('/user', (req, res) => {
   verification_code = random_code_generator();
   email_message = `<h2>Thank you ${user.firstname} for registering with the bookstore!</h2>
 <br><p>In order to purchase books, you will need to verify your email
-by entering the following code at the verification page:</p>
+by entering the following code:</p>
 <b>${verification_code}</b>`;
 
   const sql = `INSERT INTO users (firstname, lastname, email, password, phone, address,
           cardtype, cardnumber, status, subscribed_promos, verification_code)
           VALUES ('${user.firstname}', '${user.lastname}', '${user.email}',
-          '${user.password}', '${user.number}', '${user.address}', '${user.cardtype}',
-          '${user.cardnumber}', '0', '1', '${verification_code}')`;
+          MD5('${user.password}'), '${user.number}', '${user.address}', '${user.cardtype}',
+          MD5('${user.cardnumber}'), '0', '1', '${verification_code}')`;
   connection.query(sql, (err, result) => {
     if (err) {
       return console.log(err);
@@ -121,7 +121,7 @@ app.get('/verify/:code', (req, res) => {
 app.post('/login', (req, res) => {
   login = req.body;
   const sql = `SELECT id FROM users WHERE email = '${login.email}' AND
-          password = '${login.password}'`;
+          password = MD5('${login.password}')`;
   connection.query(sql, (err, result) => {
     if (err) {
       return console.log(err);

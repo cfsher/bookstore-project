@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 url = 'http://localhost:3000/login';
 
 login = {
-  email: 'test@gmail.com',
+  email: 'chris.fisher015@gmail.com',
   password: 'password'
 };
 

@@ -77,93 +77,43 @@
     <div class="breadcrumb">
         <div class="container">
             <a class="breadcrumb-item" href="index.html">Home</a>
-            <span class="breadcrumb-item active">Register</span>
+            <span class="breadcrumb-item active">Verify</span>
         </div>
     </div>
     <section class="static about-sec">
         <div class="container">
-            <h1>My Account / Register</h1>
-            <p>Create an account to order books</p>
+            <h1>Thank you for registering!</h1>
+            <p>A code was sent to your email. Please enter the code below to verify your account</p>
             <div class="form">
-                <form id="registerForm">
+                <form id="verificationForm">
                     <div class="row">
-                        <div class="col-md-4">
-                            <input id="firstname" placeholder="First Name" required>
-                            <span class="required-star">*</span>
-                        </div>
-                        <div class="col-md-4">
-                            <input id="lastname" placeholder="Last Name" required>
-                            <span class="required-star">*</span>
-                        </div>
-                        <div class="col-md-4">
-                            <input id="email" type="email" placeholder="Email" required>
-                            <span class="required-star">*</span>
-                        </div>
-                        <div class="col-md-4">
-                            <input id="password" placeholder="Password" required>
-                            <span class="required-star">*</span>
-                        </div>
-                        <div class="col-md-4">
-                            <input id="repeatpassword" placeholder="Repeat Password" required>
-                            <span class="required-star">*</span>
-                        </div>
-                        <div class="col-md-4">
-                            <input id="phone" placeholder="Mobile Number" required>
-                            <span class="required-star">*</span>
-                        </div>
-                        <div class="col-md-4">
-                            <input id="address" placeholder="Shipping Address" required>
-                            <span class="required-star">*</span>
-                        </div>
-                        <div class="col-md-4">
-                            <input id="cardtype" placeholder="Card Type" required>
-                            <span class="required-star">*</span>
-                        </div><div class="col-md-4">
-                            <input id="cardnumber" placeholder="Card Number" required>
-                            <span class="required-star">*</span>
+                        <div>
+                          <input id="code" placeholder="Code" required>
                         </div>
                         <div class="col-lg-8 col-md-12">
                             <input type="submit" id="submit" name="submitButton" value="Submit">
-                            <h5>Already registered? <a href="login.html">Login here</a></h5>
                         </div>
                     </div>
                 </form>
                 <script type='text/javascript'>
                     /* attach a submit handler to the form */
-                    $("#registerForm").submit(function (event) {
+                    $("#verificationForm").submit(function (event) {
 
-                        /* stop form from submitting normally */
                         event.preventDefault();
 
-                        /* get the action attribute from the <form action=""> element */
-                        var $form = $(this),
-                            url = "http://localhost:3000/user";
-
-                        data = {
-                          firstname: $('#firstname').val(),
-                          lastname: $('#lastname').val(),
-                          email: $('#email').val(),
-                          password: $('#password').val(),
-                          phone: $('#phone').val(),
-                          address: $('address').val(),
-                          cardtype: $('#cardtype').val(),
-                          cardnumber: $('#cardnumber').val()
-                        };
+                        var $form = $(this);
+                        url = 'http://localhost:3000/verify/' + $('#code').val();
 
                         $.ajax
                         ({
-                            type: "POST",
-                            //the url where you want to sent the userName and password to
+                            method: 'GET',
                             url: url,
                             async: false,
-                            //json object to sent to the authentication url
-                            data: JSON.stringify(data),
-                            contentType: 'application/json',
-                            success: function () {
-                              window.location.replace('verify.html');
+                            dataType: 'json',
+                            success: function (data) {
+                              window.location.replace(`index.html?user_id=${data.id}`);
                             }
                         });
-
                     });
                 </script>
 
